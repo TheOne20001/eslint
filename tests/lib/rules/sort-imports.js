@@ -119,6 +119,16 @@ ruleTester.run("sort-imports", rule, {
                 "import * as bar from 'bar.js';\n" +
                 "import * as foo from 'foo.js';"
         },
+        {
+            code:
+                "import {b, c} from 'foo.js';\n" +
+                "import d from 'foo.js';\n" +
+                "import {e, f} from 'bar.js';\n",
+            options: [{
+                ignoreSyntaxSortOrder: true,
+                memberSyntaxSortOrder: ["single", "multiple", "none", "all"]
+            }]
+        },
 
         // https://github.com/eslint/eslint/issues/5130
         {
@@ -249,6 +259,19 @@ ruleTester.run("sort-imports", rule, {
             errors: [{
                 message: "Member 'aaaaa' of the import declaration should be sorted alphabetically.",
                 type: "ImportSpecifier"
+            }]
+        },
+        {
+            code:
+                "import {b, c} from 'foo.js';\n" +
+                "import d from 'bar.js';\n",
+            output: null,
+            options: [{
+                memberSyntaxSortOrder: ["single", "multiple", "none", "all"]
+            }],
+            errors: [{
+                message: "Expected 'single' syntax before 'multiple' syntax.",
+                type: "ImportDeclaration"
             }]
         },
         {
